@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <ImageView
+        android:id="@+id/bus_image"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/bus_flat_black"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/vehicles_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="6dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:lines="2"
+        android:text="Bus 1"
+        android:textSize="19sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/bus_image"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/time_icon"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_marginRight="6dp"
+        android:src="@drawable/clock"
+        app:layout_constraintBottom_toBottomOf="@id/vehicle_time"
+        app:layout_constraintRight_toLeftOf="@id/vehicle_time"
+        app:layout_constraintTop_toTopOf="@id/vehicle_time" />
+
+    <TextView
+        android:id="@+id/vehicle_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="10:00 AM"
+        android:textSize="15sp"
+        app:layout_constraintRight_toRightOf="@id/bus_image"
+        app:layout_constraintTop_toBottomOf="@id/bus_image" />
+
+    <TextView
+        android:id="@+id/from"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Ajmeri Gate"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="@id/vehicle_time"
+        app:layout_constraintLeft_toLeftOf="@id/vehicles_name"
+        app:layout_constraintTop_toTopOf="@id/vehicle_time" />
+
+    <ImageView
+        android:layout_marginStart="8dp"
+        android:id="@+id/arrow"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:src="@drawable/right_arrow_black"
+        app:layout_constraintTop_toTopOf="@id/to"
+        app:layout_constraintBottom_toBottomOf="@id/to"
+        app:layout_constraintLeft_toRightOf="@id/from"
+        app:layout_constraintRight_toLeftOf="@id/to"/>
+
+    <TextView
+        android:layout_marginStart="8dp"
+        android:id="@+id/to"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="RBI"
+        android:textSize="15sp"
+        app:layout_constraintLeft_toRightOf="@id/arrow"
+        app:layout_constraintTop_toTopOf="@id/from" />
+
+
+    <View
+        android:id="@+id/view1"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/grey"
+        app:layout_constraintLeft_toLeftOf="@id/vehicles_name"
+        app:layout_constraintRight_toRightOf="@id/vehicle_time"
+        app:layout_constraintTop_toBottomOf="@id/to" />
+
+
+</android.support.constraint.ConstraintLayout>

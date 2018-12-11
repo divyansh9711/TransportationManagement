@@ -73,7 +73,7 @@
     <TextView
         android:id="@+id/date"
         android:textColor="@color/black"
-        android:text="Sun, 18 Nov"
+        tools:text="Sun, 18 Nov"
         android:layout_marginTop="5dp"
         android:textSize="18sp"
         app:layout_constraintLeft_toLeftOf="@id/departure_date_label"
@@ -95,7 +95,7 @@
     <TextView
         android:id="@+id/time"
         android:textColor="@color/black"
-        android:text="10:00 Am"
+        tools:text="10:00 Am"
         android:layout_marginTop="5dp"
         android:textSize="18sp"
         app:layout_constraintLeft_toLeftOf="@id/departure_time_label"
@@ -141,55 +141,12 @@
         android:layout_width="match_parent"
         android:layout_height="40dp" />
 
-    <TextView
-        android:id="@+id/trip1"
-        android:textColor="@color/black"
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="0dp"
         android:layout_marginTop="10dp"
         app:layout_constraintLeft_toLeftOf="@id/from_layout"
+        app:layout_constraintRight_toRightOf="@id/to_layout"
         app:layout_constraintTop_toBottomOf="@id/recent_search"
-        android:text="Ajmeri Gate  ->  Raja Park"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    <TextView
-
-        app:layout_constraintRight_toRightOf="@id/to_layout"
-        app:layout_constraintTop_toTopOf="@id/trip1"
-        android:text="18 Nov, 10:00 AM"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    <View
-        android:id="@+id/view2"
-        android:layout_marginTop="4dp"
-        app:layout_constraintRight_toRightOf="@id/to_layout"
-        app:layout_constraintLeft_toLeftOf="@id/from_layout"
-        app:layout_constraintTop_toBottomOf="@id/trip1"
-        android:layout_width="0dp"
-        android:background="@color/grey"
-        android:layout_height="1dp"/>
-    <TextView
-        android:id="@+id/trip2"
-        android:textColor="@color/black"
-        android:layout_marginTop="10dp"
-        app:layout_constraintLeft_toLeftOf="@id/from_layout"
-        app:layout_constraintTop_toBottomOf="@id/view2"
-        android:text="LNMIIT  ->  RBI"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    <TextView
-
-        app:layout_constraintRight_toRightOf="@id/to_layout"
-        app:layout_constraintTop_toTopOf="@id/trip2"
-        android:text="28 Oct, 6:45 PM"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    <View
-        android:id="@+id/view3"
-        android:layout_marginTop="4dp"
-        app:layout_constraintRight_toRightOf="@id/to_layout"
-        app:layout_constraintLeft_toLeftOf="@id/from_layout"
-        app:layout_constraintTop_toBottomOf="@id/trip2"
-        android:layout_width="0dp"
-        android:background="@color/grey"
-        android:layout_height="1dp"/>
+        android:layout_height="wrap_content"/>
 
 </android.support.constraint.ConstraintLayout>
