@@ -424,4 +424,9 @@
     <string name="title_activity_temp">temp</string>
     <string name="send_invitation_via_e_mail">Send invitation via E-Mail</string>
     <string name="no_events_available">No events available !</string>
+    <string name="all_buses">All Buses</string>
+    <string name="request_extra_bus">Request Extra Bus</string>
+    <string name="register_complaint">Register Complaint</string>
+    <string name="faq">FAQ</string>
+    <string name="add_bus">Add Bus</string>
 </resources>

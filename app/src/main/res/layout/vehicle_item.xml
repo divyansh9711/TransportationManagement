@@ -45,14 +45,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:text="10:00 AM"
+        tools:text="10:00 AM"
         android:textSize="15sp"
         app:layout_constraintRight_toRightOf="@id/bus_image"
         app:layout_constraintTop_toBottomOf="@id/bus_image" />
 
     <TextView
-        android:id="@+id/from"
-
+        android:id="@+id/org"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="Ajmeri Gate"
@@ -67,21 +66,20 @@
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:src="@drawable/right_arrow_black"
-        app:layout_constraintTop_toTopOf="@id/to"
-        app:layout_constraintBottom_toBottomOf="@id/to"
-        app:layout_constraintLeft_toRightOf="@id/from"
-        app:layout_constraintRight_toLeftOf="@id/to"/>
+        app:layout_constraintTop_toTopOf="@id/org"
+        app:layout_constraintBottom_toBottomOf="@id/org"
+        app:layout_constraintLeft_toRightOf="@id/org"
+        app:layout_constraintRight_toLeftOf="@id/dest"/>
 
     <TextView
         android:layout_marginStart="8dp"
-        android:id="@+id/to"
+        android:id="@+id/dest"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="RBI"
         android:textSize="15sp"
         app:layout_constraintLeft_toRightOf="@id/arrow"
-        app:layout_constraintTop_toTopOf="@id/from" />
-
+        app:layout_constraintTop_toTopOf="@id/org" />
 
     <View
         android:id="@+id/view1"
@@ -91,7 +89,7 @@
         android:background="@color/grey"
         app:layout_constraintLeft_toLeftOf="@id/vehicles_name"
         app:layout_constraintRight_toRightOf="@id/vehicle_time"
-        app:layout_constraintTop_toBottomOf="@id/to" />
+        app:layout_constraintTop_toBottomOf="@id/org" />
 
 
 </android.support.constraint.ConstraintLayout>

@@ -26,6 +26,12 @@ public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.VehicleA
         this.vehicleList = vehicleList;
     }
 
+    public void setData(List<Vehicle> list){
+        vehicleList.clear();
+        vehicleList.addAll(list);
+        notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
     public VehicleAdapterViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
@@ -38,14 +44,14 @@ public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.VehicleA
         Vehicle item = vehicleList.get(i);
         if (item != null) {
             vehicleAdapterViewHolder.vehicleName.setText(item.getVehicleName());
-            if (item.getTiming() != null && item.getTiming().getStartDate() != null) {
+            if (item.getTiming() != null && item.getTiming().getStartTime() != null) {
                 vehicleAdapterViewHolder.vehicleTime.setText(item.getTiming().getStartTime());
             }
             if (item.getStartLocation() != null) {
                 vehicleAdapterViewHolder.origin.setText(item.getStartLocation().getTitle());
             }
             if (item.getEndLocation() != null) {
-                vehicleAdapterViewHolder.origin.setText(item.getEndLocation().getTitle());
+                vehicleAdapterViewHolder.destination.setText(item.getEndLocation().getTitle());
             }
         }
     }
@@ -68,8 +74,8 @@ public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.VehicleA
             super(itemView);
             vehicleName = itemView.findViewById(R.id.vehicles_name);
             vehicleTime = itemView.findViewById(R.id.vehicle_time);
-            origin = itemView.findViewById(R.id.from);
-            destination = itemView.findViewById(R.id.to);
+            origin = itemView.findViewById(R.id.org);
+            destination = itemView.findViewById(R.id.dest);
 
             vehicleName.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -93,6 +93,7 @@ public class SearchVehicleActivity extends AppCompatActivity implements View.OnC
                         progressDialog.dismiss();
                         intent.putExtra("VEHICLE_LIST",vehicleResponse.getVehicleList());
                         startActivity(intent);
+                        finish();
                     }
 
                     @Override

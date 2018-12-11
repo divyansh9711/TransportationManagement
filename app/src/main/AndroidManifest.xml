@@ -21,7 +21,9 @@
         </activity>
         <activity android:name=".acitivity.DashboardActivity" />
         <activity android:name=".acitivity.SearchVehicleActivity" />
-        <activity android:name=".acitivity.VehicleDetail"></activity>
+        <activity android:name=".acitivity.LoginActivity" />
+
+        <activity android:name=".acitivity.VehicleDetail"/>
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBR61ejHxc-AW_HVahGHo9licnCFll3WM0" />

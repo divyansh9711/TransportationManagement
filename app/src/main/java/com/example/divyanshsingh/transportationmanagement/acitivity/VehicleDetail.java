@@ -17,8 +17,10 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.example.divyanshsingh.transportationmanagement.R;
+import com.example.divyanshsingh.transportationmanagement.models.Vehicle;
 import com.example.divyanshsingh.transportationmanagement.utils.DirectionsJSONParser;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -46,6 +48,8 @@ public class VehicleDetail extends FragmentActivity implements GoogleMap.OnMyLoc
 
     private static final int MY_LOCATION_REQUEST_CODE = 99;
     private GoogleMap mMap;
+    private Vehicle vehicle;
+    private TextView busName,date,time,from,to,driverName;
     Activity activity = this;
     ArrayList<LatLng> locs = new ArrayList<LatLng>();//pass and add coordinates of waypoints on route
 
@@ -53,6 +57,20 @@ public class VehicleDetail extends FragmentActivity implements GoogleMap.OnMyLoc
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.vehicle_detail);
+
+        busName = findViewById(R.id.bus_name);
+        date = findViewById(R.id.date);
+        time = findViewById(R.id.time);
+        from = findViewById(R.id.from);
+        to = findViewById(R.id.to);
+        driverName = findViewById(R.id.driver_name);
+
+        Intent intent = getIntent();
+        vehicle = (Vehicle) intent.getExtras().get("VEHICLE");
+
+        validateAndSet();
+
+
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map); // Get the SupportMapFragment and request notification
         //Add coordinates of waypoints
         locs.add(new LatLng(26.457273, 80.349943));
@@ -61,6 +79,39 @@ public class VehicleDetail extends FragmentActivity implements GoogleMap.OnMyLoc
         locs.add(new LatLng(26.481447, 80.336281));
         locs.add(new LatLng(26.475689, 80.289273));
         mapFragment.getMapAsync(this);// a callback object which will be triggered when the GoogleMap instance is ready to be used.
+    }
+
+    public void validateAndSet(){
+        if(vehicle != null){
+            if(vehicle.getVehicleName() != null && !vehicle.getVehicleName().equals("")){
+                busName.setText(vehicle.getVehicleName());
+            }else{
+                busName.setText("N/A");
+            }
+            if(vehicle.getTiming() != null && vehicle.getTiming().getStartDate() != null && !vehicle.getTiming().getStartDate().equals("")){
+                date.setText(vehicle.getTiming().getStartDate());
+            }else{
+                date.setText("N/A");
+            }
+            if(vehicle.getTiming().getStartTime() != null && !vehicle.getTiming().getStartTime().equals("")){
+                time.setText(vehicle.getTiming().getStartTime());
+            }else {
+                time.setText("N/A");
+            }
+            if(vehicle.getStartLocation() != null && vehicle.getStartLocation().getTitle() != null && !vehicle.getStartLocation().getTitle().equals("")){
+                from.setText(vehicle.getStartLocation().getTitle());
+            }else{
+                from.setText("N/A");
+            }
+            if(vehicle.getEndLocation() != null && vehicle.getEndLocation().getTitle() != null && !vehicle.getEndLocation().getTitle().equals("")){
+                to.setText(vehicle.getEndLocation().getTitle());
+            }else{
+                to.setText("N/A");
+            }
+            if(vehicle.getDriver() != null && vehicle.getDriver().getFirstName() != null && vehicle.getDriver().getFirstName().equals("")){
+                driverName.setText(vehicle.getDriver().getFirstName());
+            }
+        }
     }
 
     @Override

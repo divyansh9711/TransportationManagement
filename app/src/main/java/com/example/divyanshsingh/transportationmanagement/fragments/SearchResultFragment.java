@@ -24,6 +24,7 @@ public class SearchResultFragment extends Fragment {
 
     private RecyclerView vehicleRecycler;
     private VehicleAdapter vehicleAdapter;
+
     public SearchResultFragment() {
         // Required empty public constructor
     }
@@ -43,12 +44,20 @@ public class SearchResultFragment extends Fragment {
         vehicleRecycler = view.findViewById(R.id.vehicle_recycler);
         Intent intent = Objects.requireNonNull(getActivity()).getIntent();
         List<Vehicle> vehicleList = (List<Vehicle>) Objects.requireNonNull(intent.getExtras()).get("VEHICLE_LIST");
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(),1,false);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), 1, false);
         vehicleRecycler.setLayoutManager(linearLayoutManager);
-        vehicleAdapter = new VehicleAdapter(getActivity(),vehicleList);
+        vehicleAdapter = new VehicleAdapter(getActivity(), vehicleList);
         vehicleRecycler.setAdapter(vehicleAdapter);
         return view;
     }
 
+    public void setData(List<Vehicle> list) {
+        if (vehicleAdapter != null) {
+            vehicleAdapter.setData(list);
+        }else{
+            vehicleAdapter = new VehicleAdapter(getActivity(), list);
+            vehicleRecycler.setAdapter(vehicleAdapter);
+        }
+    }
 
 }
