@@ -1,6 +1,7 @@
 package com.example.divyanshsingh.transportationmanagement.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.divyanshsingh.transportationmanagement.R;
+import com.example.divyanshsingh.transportationmanagement.acitivity.VehicleDetail;
 import com.example.divyanshsingh.transportationmanagement.models.Vehicle;
 
 import java.util.List;
@@ -68,6 +70,15 @@ public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.VehicleA
             vehicleTime = itemView.findViewById(R.id.vehicle_time);
             origin = itemView.findViewById(R.id.from);
             destination = itemView.findViewById(R.id.to);
+
+            vehicleName.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, VehicleDetail.class);
+                    intent.putExtra("VEHICLE",vehicleList.get(getAdapterPosition()));
+                    context.startActivity(intent);
+                }
+            });
         }
     }
 }
