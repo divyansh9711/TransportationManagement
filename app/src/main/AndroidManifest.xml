@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.divyanshsingh.transportationmanagement">
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:usesCleartextTraffic="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
         <activity android:name=".acitivity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,11 +23,15 @@
         <activity android:name=".acitivity.DashboardActivity" />
         <activity android:name=".acitivity.SearchVehicleActivity" />
         <activity android:name=".acitivity.LoginActivity" />
+        <activity android:name=".acitivity.VehicleDetail" />
 
-        <activity android:name=".acitivity.VehicleDetail"/>
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBR61ejHxc-AW_HVahGHo9licnCFll3WM0" />
+
+        <activity android:name=".acitivity.RequestBusActivity"></activity>
+        <uses-library android:name="org.apache.http.legacy" android:required="false"/>
+
     </application>
 
 </manifest>

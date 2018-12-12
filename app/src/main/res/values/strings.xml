@@ -6,6 +6,7 @@
     <!--api keys-->
     <string name="facebook_app_id">509045542494190</string>
     <string name="LocationAPI">AIzaSyDXYUmzwVol3ESaliktVz-wP5j-sPgXYNQ</string>
+    <string name="time_travel">We have not invented time travel yet, Please find a bus which runs in the present or the future !</string>
     <!--api keys end here-->
     <string name="login">Login</string>
     <string name="existing_user">Already a User</string>

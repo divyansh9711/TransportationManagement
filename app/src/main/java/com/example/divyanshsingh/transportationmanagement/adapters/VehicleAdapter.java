@@ -20,12 +20,15 @@ public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.VehicleA
 
     private Context context;
     private List<Vehicle> vehicleList;
-
-    public VehicleAdapter(Context context, List<Vehicle> vehicleList) {
+    private OnClickListener listener;
+    public VehicleAdapter(Context context, List<Vehicle> vehicleList,OnClickListener listener) {
         this.context = context;
         this.vehicleList = vehicleList;
+        this.listener = listener;
     }
-
+    public interface OnClickListener{
+        void onClick(Vehicle vehicle);
+    }
     public void setData(List<Vehicle> list){
         vehicleList.clear();
         vehicleList.addAll(list);
@@ -80,9 +83,7 @@ public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.VehicleA
             vehicleName.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(context, VehicleDetail.class);
-                    intent.putExtra("VEHICLE",vehicleList.get(getAdapterPosition()));
-                    context.startActivity(intent);
+                    listener.onClick(vehicleList.get(getAdapterPosition()));
                 }
             });
         }

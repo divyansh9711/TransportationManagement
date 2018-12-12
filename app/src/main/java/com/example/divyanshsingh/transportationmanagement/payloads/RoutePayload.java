@@ -9,6 +9,9 @@ public class RoutePayload extends Payload {
     private Route route;
     private String routeId;
 
+    public RoutePayload(){super();}
+    public RoutePayload(String routeId){this.routeId = routeId;}
+
     public String getRouteId() {
         return routeId;
     }
@@ -21,11 +24,6 @@ public class RoutePayload extends Payload {
     public void setRoute(Route route) {
         this.route = route;
     }
-    public String getId() {
-        return id;
-    }
-    public void setId(String id) {
-        this.id = id;
-    }
-    private String id;
+
+
 }

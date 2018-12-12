@@ -2,9 +2,11 @@ package com.example.divyanshsingh.transportationmanagement.API;
 
 
 import com.example.divyanshsingh.transportationmanagement.payloads.LocationPayload;
+import com.example.divyanshsingh.transportationmanagement.payloads.RoutePayload;
 import com.example.divyanshsingh.transportationmanagement.payloads.UserPayload;
 import com.example.divyanshsingh.transportationmanagement.payloads.VehiclePayload;
 import com.example.divyanshsingh.transportationmanagement.response.LocationResponse;
+import com.example.divyanshsingh.transportationmanagement.response.RouteResponse;
 import com.example.divyanshsingh.transportationmanagement.response.UserResponse;
 import com.example.divyanshsingh.transportationmanagement.response.VehicleResponse;
 
@@ -27,4 +29,7 @@ public interface ApiInterface {
     Call<UserResponse> createUser(@Body UserPayload payload);
     @POST("vehicle/getVehicle")
     Call<VehicleResponse> getVehicle(@Body VehiclePayload payload);
+    @POST("route/getSubRoute")
+    Call<RouteResponse> getSubs(@Body RoutePayload payload);
+
 }

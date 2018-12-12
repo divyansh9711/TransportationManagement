@@ -113,6 +113,7 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
 
     @Override
     public void onClick(View view) {
+        Intent intent ;
         switch (view.getId()) {
             case R.id.all_buses:
                 getAllBuses();
@@ -123,6 +124,8 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
                 break;
             case R.id.request_extra:
                 closeDrawer();
+                intent = new Intent(DashboardActivity.this,RequestBusActivity.class);
+                startActivity(intent);
                 break;
             case R.id.faq:
                 closeDrawer();
@@ -130,7 +133,7 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
             case R.id.log_out:
                 FirebaseAuth.getInstance().signOut();
                 closeDrawer();
-                Intent intent = new Intent(DashboardActivity.this, LoginActivity.class);
+                intent = new Intent(DashboardActivity.this, LoginActivity.class);
                 startActivity(intent);
                 finish();
                 break;

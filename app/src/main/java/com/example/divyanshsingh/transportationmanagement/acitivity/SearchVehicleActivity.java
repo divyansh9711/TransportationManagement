@@ -37,6 +37,7 @@ public class SearchVehicleActivity extends AppCompatActivity implements View.OnC
     private Dialog progressDialog;
     private EditText destination;
     private Button searchBuses;
+    private int day;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +51,7 @@ public class SearchVehicleActivity extends AppCompatActivity implements View.OnC
         timeTv.setText(DateTimeUtils.getCurrentTime());
         dateTv = findViewById(R.id.date);
         dateTv.setText(DateTimeUtils.getCurrentFormattedDate());
-
+        day = DateTimeUtils.getDay(0);
         progressDialog = CommonProgressDialog.LoadingSpinner(SearchVehicleActivity.this);
 
         time = DateTimeUtils.getCurrentTimeId();
@@ -110,6 +111,10 @@ public class SearchVehicleActivity extends AppCompatActivity implements View.OnC
             @Override
             public void onTimeSet(TimePicker timePicker, int i, int i1) {
                 time = String.valueOf(i) + String.valueOf(i1) + "00";
+                if(day == DateTimeUtils.getDay(0) && i < DateTimeUtils.getHour(0)){
+                    Toast.makeText(SearchVehicleActivity.this,getResources().getString(R.string.time_travel),Toast.LENGTH_LONG).show();
+                    return;
+                }
                 timing.setStartTime(time);
                 view.setText(String.valueOf(i) + ":" + String.valueOf(i1));
             }
@@ -125,9 +130,13 @@ public class SearchVehicleActivity extends AppCompatActivity implements View.OnC
             @Override
             public void onDateSet(DatePicker datePicker, int yy, int mm, int dd) {
                 String m = "", d = "";
-
+                day = dd;
                 m = String.valueOf(mm + 1);
                 d = String.valueOf(dd);
+                if(dd < DateTimeUtils.getDay(0)){
+                    Toast.makeText(SearchVehicleActivity.this,getResources().getString(R.string.time_travel),Toast.LENGTH_LONG).show();
+                    return;
+                }
                 if (mm < 9) {
                     m = "0" + String.valueOf(mm + 1);
                 }
@@ -135,7 +144,7 @@ public class SearchVehicleActivity extends AppCompatActivity implements View.OnC
                     d = "0" + String.valueOf(dd);
                 }
 
-                view.setText(d + "/" + m);
+                view.setText(DateTimeUtils.getWeekDay(yy,mm,dd) + ", " +d + "/" + m);
                 date = d + m + String.valueOf(yy);
                             }
         }, DateTimeUtils.getYear(0), DateTimeUtils.getMonth(0), DateTimeUtils.getDay(0));

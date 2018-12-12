@@ -1,10 +1,13 @@
 package com.example.divyanshsingh.transportationmanagement.utils;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 public class DateTimeUtils {
     public static String getCurrentDateId() {
-        String m, d, hr, min, se, reString="";
+        String m, d, hr, min, se, reString = "";
         final Calendar c = Calendar.getInstance();
         int day = c.get(Calendar.DAY_OF_MONTH);
         if (day < 10) {
@@ -26,15 +29,16 @@ public class DateTimeUtils {
     public static String getCurrentFormattedDate() {
         final Calendar c = Calendar.getInstance();
         int day = c.get(Calendar.DAY_OF_WEEK);
-        return String.valueOf(day) + ", " + getDay() + "/" + getMonth();
+        return getWeekDay(getYear(0),getMonth(0),getDay(0)) + ", " + getDay() + "/" + getMonth();
     }
 
-    public static String getCurrentTime(){
+    public static String getCurrentTime() {
         String time = getHour() + ":" + getMinute();
         return time;
     }
-    public static String getCurrentTimeId(){
-        String time = getHour()+getMinute()+"00";
+
+    public static String getCurrentTimeId() {
+        String time = getHour() + getMinute() + "00";
         return time;
     }
 
@@ -132,5 +136,37 @@ public class DateTimeUtils {
 
         return new String(result);
 
+    }
+
+
+    public static String getWeekDay(int y, int m, int d) {
+        final Calendar c = Calendar.getInstance();
+        String result = "";
+        c.set(y, m, d);
+        switch (c.get(Calendar.DAY_OF_WEEK)) {
+            case 1:
+                result = "Sun";
+                break;
+            case 2:
+                result = "Mon";
+                break;
+            case 3:
+                result = "Tue";
+                break;
+            case 4:
+                result = "Wed";
+                break;
+            case 5:
+                result = "Thu";
+                break;
+            case 6:
+                result = "Fri";
+                break;
+            case 7:
+                result = "Sat";
+                break;
+        }
+
+        return result;
     }
 }

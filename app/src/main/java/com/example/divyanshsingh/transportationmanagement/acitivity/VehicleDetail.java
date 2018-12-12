@@ -20,6 +20,8 @@ import android.util.Log;
 import android.widget.TextView;
 
 import com.example.divyanshsingh.transportationmanagement.R;
+import com.example.divyanshsingh.transportationmanagement.models.Location;
+import com.example.divyanshsingh.transportationmanagement.models.Route;
 import com.example.divyanshsingh.transportationmanagement.models.Vehicle;
 import com.example.divyanshsingh.transportationmanagement.utils.DirectionsJSONParser;
 import com.google.android.gms.maps.CameraUpdate;
@@ -49,7 +51,8 @@ public class VehicleDetail extends FragmentActivity implements GoogleMap.OnMyLoc
     private static final int MY_LOCATION_REQUEST_CODE = 99;
     private GoogleMap mMap;
     private Vehicle vehicle;
-    private TextView busName,date,time,from,to,driverName;
+    private ArrayList<Location> markers;
+    private TextView busName, date, time, from, to, driverName;
     Activity activity = this;
     ArrayList<LatLng> locs = new ArrayList<LatLng>();//pass and add coordinates of waypoints on route
 
@@ -69,46 +72,50 @@ public class VehicleDetail extends FragmentActivity implements GoogleMap.OnMyLoc
         vehicle = (Vehicle) intent.getExtras().get("VEHICLE");
 
         validateAndSet();
+        markers = new ArrayList<>();
 
-
+        getMarkers();
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map); // Get the SupportMapFragment and request notification
-        //Add coordinates of waypoints
-        locs.add(new LatLng(26.457273, 80.349943));
+        //Add coordinates of waypoints5
+        for(Location loc : markers){
+            locs.add(new LatLng(Double.parseDouble(loc.getLatitude()),Double.parseDouble(loc.getLongitude())));
+        }
+        /*locs.add(new LatLng(26.457273, 80.349943));
         locs.add(new LatLng(26.477538, 80.343243));
         locs.add(new LatLng(26.480797, 80.301492));
         locs.add(new LatLng(26.481447, 80.336281));
-        locs.add(new LatLng(26.475689, 80.289273));
+        locs.add(new LatLng(26.475689, 80.289273));*/
         mapFragment.getMapAsync(this);// a callback object which will be triggered when the GoogleMap instance is ready to be used.
     }
 
-    public void validateAndSet(){
-        if(vehicle != null){
-            if(vehicle.getVehicleName() != null && !vehicle.getVehicleName().equals("")){
+    public void validateAndSet() {
+        if (vehicle != null) {
+            if (vehicle.getVehicleName() != null && !vehicle.getVehicleName().equals("")) {
                 busName.setText(vehicle.getVehicleName());
-            }else{
+            } else {
                 busName.setText("N/A");
             }
-            if(vehicle.getTiming() != null && vehicle.getTiming().getStartDate() != null && !vehicle.getTiming().getStartDate().equals("")){
+            if (vehicle.getTiming() != null && vehicle.getTiming().getStartDate() != null && !vehicle.getTiming().getStartDate().equals("")) {
                 date.setText(vehicle.getTiming().getStartDate());
-            }else{
+            } else {
                 date.setText("N/A");
             }
-            if(vehicle.getTiming().getStartTime() != null && !vehicle.getTiming().getStartTime().equals("")){
+            if (vehicle.getTiming().getStartTime() != null && !vehicle.getTiming().getStartTime().equals("")) {
                 time.setText(vehicle.getTiming().getStartTime());
-            }else {
+            } else {
                 time.setText("N/A");
             }
-            if(vehicle.getStartLocation() != null && vehicle.getStartLocation().getTitle() != null && !vehicle.getStartLocation().getTitle().equals("")){
+            if (vehicle.getStartLocation() != null && vehicle.getStartLocation().getTitle() != null && !vehicle.getStartLocation().getTitle().equals("")) {
                 from.setText(vehicle.getStartLocation().getTitle());
-            }else{
+            } else {
                 from.setText("N/A");
             }
-            if(vehicle.getEndLocation() != null && vehicle.getEndLocation().getTitle() != null && !vehicle.getEndLocation().getTitle().equals("")){
+            if (vehicle.getEndLocation() != null && vehicle.getEndLocation().getTitle() != null && !vehicle.getEndLocation().getTitle().equals("")) {
                 to.setText(vehicle.getEndLocation().getTitle());
-            }else{
+            } else {
                 to.setText("N/A");
             }
-            if(vehicle.getDriver() != null && vehicle.getDriver().getFirstName() != null && vehicle.getDriver().getFirstName().equals("")){
+            if (vehicle.getDriver() != null && vehicle.getDriver().getFirstName() != null && vehicle.getDriver().getFirstName().equals("")) {
                 driverName.setText(vehicle.getDriver().getFirstName());
             }
         }
@@ -119,7 +126,7 @@ public class VehicleDetail extends FragmentActivity implements GoogleMap.OnMyLoc
         mMap = googleMap;
         LatLngBounds.Builder builder = new LatLngBounds.Builder();// builder that is able to create a minimum bound or rectangle based on a set of LatLng points.
         for (int i = 0; i < locs.size(); i++) {
-            mMap.addMarker(new MarkerOptions().position(locs.get(i)).title("Marker" + i));//adding markers on all waypoints
+            mMap.addMarker(new MarkerOptions().position(locs.get(i)).title(markers.get(i).getTitle()));//adding markers on all waypoints
             builder.include(locs.get(i));//Including each waypoint for building of the bounds.
         }
         LatLngBounds bounds = builder.build();//Creates the LatLng bounds.
@@ -153,6 +160,16 @@ public class VehicleDetail extends FragmentActivity implements GoogleMap.OnMyLoc
         }
     }
 
+    private void getMarkers() {
+        markers.add(vehicle.getStartLocation());
+        List<Route> subRoutes = vehicle.getSub();
+        if (subRoutes != null) {
+            for (Route route : subRoutes) {
+                markers.add(route.getEndLocation());
+            }
+        }
+        markers.add(vehicle.getEndLocation());
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {

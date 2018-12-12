@@ -10,6 +10,7 @@ import java.util.List;
  *
  */
 public class LocationResponse {
+
     @SerializedName("baseResponse")
     @Expose
     private BaseResponse baseResponse;
