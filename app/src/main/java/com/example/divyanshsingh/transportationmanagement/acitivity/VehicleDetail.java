@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
@@ -17,6 +18,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 
 import com.example.divyanshsingh.transportationmanagement.R;
@@ -52,7 +54,7 @@ public class VehicleDetail extends FragmentActivity implements GoogleMap.OnMyLoc
     private GoogleMap mMap;
     private Vehicle vehicle;
     private ArrayList<Location> markers;
-    private TextView busName, date, time, from, to, driverName;
+    private TextView busName, date, time, from, to, driverName, phone;
     Activity activity = this;
     ArrayList<LatLng> locs = new ArrayList<LatLng>();//pass and add coordinates of waypoints on route
 
@@ -66,19 +68,30 @@ public class VehicleDetail extends FragmentActivity implements GoogleMap.OnMyLoc
         time = findViewById(R.id.time);
         from = findViewById(R.id.from);
         to = findViewById(R.id.to);
+        phone = findViewById(R.id.phone);
         driverName = findViewById(R.id.driver_name);
 
         Intent intent = getIntent();
         vehicle = (Vehicle) intent.getExtras().get("VEHICLE");
 
         validateAndSet();
+        phone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (phone.getText() != null && !phone.getText().equals("")) {
+                    Intent intent = new Intent(Intent.ACTION_DIAL);
+                    intent.setData(Uri.parse("tel:" + phone.getText()));
+                    startActivity(intent);
+                }
+            }
+        });
         markers = new ArrayList<>();
 
         getMarkers();
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map); // Get the SupportMapFragment and request notification
         //Add coordinates of waypoints5
-        for(Location loc : markers){
-            locs.add(new LatLng(Double.parseDouble(loc.getLatitude()),Double.parseDouble(loc.getLongitude())));
+        for (Location loc : markers) {
+            locs.add(new LatLng(Double.parseDouble(loc.getLatitude()), Double.parseDouble(loc.getLongitude())));
         }
         /*locs.add(new LatLng(26.457273, 80.349943));
         locs.add(new LatLng(26.477538, 80.343243));
@@ -115,8 +128,13 @@ public class VehicleDetail extends FragmentActivity implements GoogleMap.OnMyLoc
             } else {
                 to.setText("N/A");
             }
-            if (vehicle.getDriver() != null && vehicle.getDriver().getFirstName() != null && vehicle.getDriver().getFirstName().equals("")) {
-                driverName.setText(vehicle.getDriver().getFirstName());
+            if (vehicle.getDriver() != null && vehicle.getDriver().getFirstName() != null && !vehicle.getDriver().getFirstName().equals("")
+                    && vehicle.getDriver().getLastName() != null && !vehicle.getDriver().getLastName().equals("")
+                    && vehicle.getDriver().getUserMobile() != null) {
+                driverName.setText(vehicle.getDriver().getFirstName() + " " + vehicle.getDriver().getLastName());
+                phone.setText(vehicle.getDriver().getUserMobile());
+            } else {
+                driverName.setText("N/A");
             }
         }
     }
@@ -317,12 +335,15 @@ public class VehicleDetail extends FragmentActivity implements GoogleMap.OnMyLoc
         String key = "key=AIzaSyCMQFmvLLCPawrJO0mb9NTjP2bxiS8sQ9Y";//Server side API key
         String alternatives = "alternatives=false";//compute single best route for given waypoints, no other alternative route is calculated
         String waypoints = "waypoints=optimize%3Atrue";//'optimize = true' means arrange waypoints in such manner quickest and shortest route is computed
-        for (int i = 1; i < locs.size() - 1; i++)//except source and destination, all other major points is considered waypoints
-        {
-            waypoints = waypoints + "%7C" + locs.get(i).latitude + "%2C" + locs.get(i).longitude;//ASCII keycode in hexadecimal '7C' = '|' and '2C' = ','
+        String parameters = str_origin + "&" + str_dest + "&" + sensor + "&" + mode + "&" + alternatives + "&" + key;
+        if (locs.size() > 2) {
+            for (int i = 1; i < locs.size() - 1; i++)//except source and destination, all other major points is considered waypoints
+            {
+                waypoints = waypoints + "%7C" + locs.get(i).latitude + "%2C" + locs.get(i).longitude;//ASCII keycode in hexadecimal '7C' = '|' and '2C' = ','
+            }
+            // Building the parameters to the web service
+            parameters = str_origin + "&" + str_dest + "&" + sensor + "&" + mode + "&" + alternatives + "&" + waypoints + "&" + key;
         }
-        // Building the parameters to the web service
-        String parameters = str_origin + "&" + str_dest + "&" + sensor + "&" + mode + "&" + alternatives + "&" + waypoints + "&" + key;
 
         // Output format
         String output = "json";

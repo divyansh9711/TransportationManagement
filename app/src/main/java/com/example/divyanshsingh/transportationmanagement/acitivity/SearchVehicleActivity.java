@@ -37,7 +37,7 @@ public class SearchVehicleActivity extends AppCompatActivity implements View.OnC
     private Dialog progressDialog;
     private EditText destination;
     private Button searchBuses;
-    private int day;
+    private int day, x, y;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +59,12 @@ public class SearchVehicleActivity extends AppCompatActivity implements View.OnC
         timing = new Timing();
         timing.setStartTime(time);
         timing.setStartDate(date);
-
+        timing.setEndDate("0");
+        x = DateTimeUtils.getMinute(0);
+        y = DateTimeUtils.getYear(0);
+        if (DateTimeUtils.getWeekDay(y, x, day).equals("Sun")) {
+            timing.setEndDate("1");
+        }
         timeTv.setOnClickListener(this);
         dateTv.setOnClickListener(this);
         searchBuses.setOnClickListener(this);
@@ -71,7 +76,6 @@ public class SearchVehicleActivity extends AppCompatActivity implements View.OnC
             case R.id.search_bus:
                 progressDialog.show();
                 getVehicle();
-
                 break;
             case R.id.time:
                 getTime(timeTv);
@@ -85,15 +89,16 @@ public class SearchVehicleActivity extends AppCompatActivity implements View.OnC
     private void getVehicle() {
         String startLocation = origin.getText().toString();
         String endLocation = destination.getText().toString();
-        VehiclePayload vehiclePayload = new VehiclePayload(startLocation,endLocation,timing);
+        VehiclePayload vehiclePayload = new VehiclePayload(startLocation, endLocation, timing);
         RestClient.getApiInterfaceInt(SearchVehicleActivity.this).getVehicle(vehiclePayload)
                 .enqueue(new ResponseResolver<VehicleResponse>(SearchVehicleActivity.this, false, true) {
                     @Override
                     public void success(VehicleResponse vehicleResponse) {
                         Intent intent = new Intent(SearchVehicleActivity.this, DashboardActivity.class);
-                        progressDialog.dismiss();
-                        intent.putExtra("VEHICLE_LIST",vehicleResponse.getVehicleList());
+
+                        intent.putExtra("VEHICLE_LIST", vehicleResponse.getVehicleList());
                         startActivity(intent);
+                        progressDialog.dismiss();
                         finish();
                     }
 
@@ -110,13 +115,17 @@ public class SearchVehicleActivity extends AppCompatActivity implements View.OnC
             @SuppressLint("SetTextI18n")
             @Override
             public void onTimeSet(TimePicker timePicker, int i, int i1) {
+
                 time = String.valueOf(i) + String.valueOf(i1) + "00";
-                if(day == DateTimeUtils.getDay(0) && i < DateTimeUtils.getHour(0)){
-                    Toast.makeText(SearchVehicleActivity.this,getResources().getString(R.string.time_travel),Toast.LENGTH_LONG).show();
+                if (day == DateTimeUtils.getDay(0) && i < DateTimeUtils.getHour(0)) {
+                    Toast.makeText(SearchVehicleActivity.this, getResources().getString(R.string.time_travel), Toast.LENGTH_LONG).show();
                     return;
                 }
                 timing.setStartTime(time);
                 view.setText(String.valueOf(i) + ":" + String.valueOf(i1));
+                if(i1 == 0){
+                    view.setText(String.valueOf(i)  + ":" + String.valueOf(i1) + "0");
+                }
             }
         }, 0, 0, true);
         timePickerDialog.setTitle("Time");
@@ -131,10 +140,11 @@ public class SearchVehicleActivity extends AppCompatActivity implements View.OnC
             public void onDateSet(DatePicker datePicker, int yy, int mm, int dd) {
                 String m = "", d = "";
                 day = dd;
+
                 m = String.valueOf(mm + 1);
                 d = String.valueOf(dd);
-                if(dd < DateTimeUtils.getDay(0)){
-                    Toast.makeText(SearchVehicleActivity.this,getResources().getString(R.string.time_travel),Toast.LENGTH_LONG).show();
+                if (dd < DateTimeUtils.getDay(0)) {
+                    Toast.makeText(SearchVehicleActivity.this, getResources().getString(R.string.time_travel), Toast.LENGTH_LONG).show();
                     return;
                 }
                 if (mm < 9) {
@@ -143,10 +153,13 @@ public class SearchVehicleActivity extends AppCompatActivity implements View.OnC
                 if (dd < 10) {
                     d = "0" + String.valueOf(dd);
                 }
+                if (DateTimeUtils.getWeekDay(yy, mm, dd).equals("Sun")) {
 
-                view.setText(DateTimeUtils.getWeekDay(yy,mm,dd) + ", " +d + "/" + m);
+                    timing.setEndDate("1");
+                }
+                view.setText(DateTimeUtils.getWeekDay(yy, mm, dd) + ", " + d + "/" + m);
                 date = d + m + String.valueOf(yy);
-                            }
+            }
         }, DateTimeUtils.getYear(0), DateTimeUtils.getMonth(0), DateTimeUtils.getDay(0));
         datePickerDialog.setTitle("Day");
         datePickerDialog.show();

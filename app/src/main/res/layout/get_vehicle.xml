@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="10dp"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="50dp"
         android:layout_weight="1"
         android:hint="From"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -43,7 +43,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="10dp"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="50dp"
         android:layout_weight="1"
         android:hint="To"
         app:layout_constraintLeft_toRightOf="@id/arrow"
@@ -115,7 +115,7 @@
 
     <Button
         android:id="@+id/search_bus"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="40dp"
         android:background="@color/colorAccent"
         android:lineSpacingExtra="17sp"
         android:textColor="#ffffff"
@@ -127,7 +127,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content" />
 
-    <TextView
+    <!--<TextView
         android:id="@+id/recent_search"
         android:background="#e1e1e1"
         android:gravity="center"
@@ -147,6 +147,6 @@
         app:layout_constraintLeft_toLeftOf="@id/from_layout"
         app:layout_constraintRight_toRightOf="@id/to_layout"
         app:layout_constraintTop_toBottomOf="@id/recent_search"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"/>-->
 
 </android.support.constraint.ConstraintLayout>

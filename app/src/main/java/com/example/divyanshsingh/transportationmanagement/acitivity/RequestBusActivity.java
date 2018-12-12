@@ -5,7 +5,9 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -20,19 +22,31 @@ import java.util.Date;
 public class RequestBusActivity extends AppCompatActivity implements View.OnClickListener{
     private EditText from,to,reason;
     private TextView timeTv,dateTv;
+    private Button submit;
     private String time,date;
     private int day;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request_bus);
-
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Request Bus");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(getResources().getDrawable(R.drawable.left_arrow));
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         from = findViewById(R.id.from);
         to = findViewById(R.id.to);
         reason = findViewById(R.id.reason_layout);
         timeTv = findViewById(R.id.time);
         timeTv.setText(DateTimeUtils.getCurrentTime());
         dateTv = findViewById(R.id.date);
+        submit = findViewById(R.id.submit);
         dateTv.setText(DateTimeUtils.getCurrentFormattedDate());
 
         day = DateTimeUtils.getDay(0);
@@ -42,6 +56,7 @@ public class RequestBusActivity extends AppCompatActivity implements View.OnClic
 
         timeTv.setOnClickListener(this);
         dateTv.setOnClickListener(this);
+        submit.setOnClickListener(this);
 
     }
 
@@ -53,6 +68,10 @@ public class RequestBusActivity extends AppCompatActivity implements View.OnClic
                 break;
             case R.id.date:
                 getDate(dateTv);
+                break;
+            case R.id.submit:
+                Toast.makeText(RequestBusActivity.this,"Your request has been submitted",Toast.LENGTH_LONG).show();
+                finish();
                 break;
         }
     }

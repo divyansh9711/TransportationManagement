@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.divyanshsingh.transportationmanagement.API.APIError;
 import com.example.divyanshsingh.transportationmanagement.API.ResponseResolver;
@@ -39,6 +40,8 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
     private SearchResultFragment resultFragment;
     private DrawerLayout drawer;
     private boolean profile;
+    private boolean doubleBackToExitPressedOnce = false;
+
     private Dialog progressDialog;
 
     private TextView userName, allBuses, requestExtra, registerComplaints, faq, logOut, addBus;
@@ -85,6 +88,23 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         registerComplaints.setOnClickListener(this);
         requestExtra.setOnClickListener(this);
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // .... other stuff in my onResume ....
+        this.doubleBackToExitPressedOnce = false;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            return;
+        }
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "Press back again to exit!", Toast.LENGTH_SHORT).show();
+    }
     private void setUpNav(){
         String firstName = "", lastName = "";
         String name = AppController.prefs.getString(Constants.loggedInUserName, "Curious One");
@@ -120,6 +140,8 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
                 closeDrawer();
                 break;
             case R.id.register_complaints:
+                intent = new Intent(DashboardActivity.this,ComplaintActivity.class);
+                startActivity(intent);
                 closeDrawer();
                 break;
             case R.id.request_extra:
@@ -128,6 +150,8 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
                 startActivity(intent);
                 break;
             case R.id.faq:
+                intent = new Intent(DashboardActivity.this,FaqActivity.class);
+                startActivity(intent);
                 closeDrawer();
                 break;
             case R.id.log_out:

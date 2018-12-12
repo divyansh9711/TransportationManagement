@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.divyanshsingh.transportationmanagement.API.APIError;
@@ -34,6 +35,7 @@ import java.util.Objects;
 public class SearchResultFragment extends Fragment implements VehicleAdapter.OnClickListener {
 
     private RecyclerView vehicleRecycler;
+    private ImageView search;
     private VehicleAdapter vehicleAdapter;
     private Dialog progressDialog;
 
@@ -55,7 +57,7 @@ public class SearchResultFragment extends Fragment implements VehicleAdapter.OnC
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_search_result, container, false);
         progressDialog = CommonProgressDialog.LoadingSpinner(getContext());
-
+        search = view.findViewById(R.id.search);
         vehicleRecycler = view.findViewById(R.id.vehicle_recycler);
         Intent intent = Objects.requireNonNull(getActivity()).getIntent();
         List<Vehicle> vehicleList = (List<Vehicle>) Objects.requireNonNull(intent.getExtras()).get("VEHICLE_LIST");
@@ -63,6 +65,15 @@ public class SearchResultFragment extends Fragment implements VehicleAdapter.OnC
         vehicleRecycler.setLayoutManager(linearLayoutManager);
         vehicleAdapter = new VehicleAdapter(getActivity(), vehicleList,this);
         vehicleRecycler.setAdapter(vehicleAdapter);
+
+        search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(),SearchVehicleActivity.class);
+                startActivity(intent);
+            }
+        });
+
         return view;
     }
 

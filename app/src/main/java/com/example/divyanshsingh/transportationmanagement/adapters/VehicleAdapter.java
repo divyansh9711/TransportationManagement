@@ -55,6 +55,10 @@ public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.VehicleA
             }
             if (item.getEndLocation() != null) {
                 vehicleAdapterViewHolder.destination.setText(item.getEndLocation().getTitle());
+            }if(item.getTiming().getEndDate().equals("0")){
+                vehicleAdapterViewHolder.day.setText("Week Day");
+            }else{
+                vehicleAdapterViewHolder.day.setText("Holiday");
             }
         }
     }
@@ -71,7 +75,7 @@ public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.VehicleA
         TextView vehicleName;
         TextView vehicleTime;
         TextView origin;
-        TextView destination;
+        TextView destination,day;
 
         public VehicleAdapterViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -79,7 +83,7 @@ public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.VehicleA
             vehicleTime = itemView.findViewById(R.id.vehicle_time);
             origin = itemView.findViewById(R.id.org);
             destination = itemView.findViewById(R.id.dest);
-
+            day = itemView.findViewById(R.id.day);
             vehicleName.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

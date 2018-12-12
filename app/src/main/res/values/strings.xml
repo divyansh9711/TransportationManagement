@@ -430,4 +430,5 @@
     <string name="register_complaint">Register Complaint</string>
     <string name="faq">FAQ</string>
     <string name="add_bus">Add Bus</string>
+    <string name="requests_will">* Requests will be processed only when more then 15 buses are requested for the same slot.</string>
 </resources>
