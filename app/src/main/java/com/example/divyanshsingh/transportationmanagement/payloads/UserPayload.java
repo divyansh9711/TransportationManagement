@@ -1,5 +1,6 @@
 package com.example.divyanshsingh.transportationmanagement.payloads;
 
+import com.example.divyanshsingh.transportationmanagement.models.User;
 import com.example.divyanshsingh.transportationmanagement.models.Vehicle;
 /**
  * @author Divyansh Singh
@@ -7,26 +8,18 @@ import com.example.divyanshsingh.transportationmanagement.models.Vehicle;
  */
 public class UserPayload extends Payload {
 
-    private Vehicle vehicle;
-    private String vehicleId;
-    private String vehilceRegNum;
+    private User user;
 
-    public Vehicle getVehicle() {
-        return vehicle;
+    public UserPayload (){super();}
+    
+    public UserPayload(User user) {
+        this.user = user;
     }
-    public void setVehicle(Vehicle vehicle) {
-        this.vehicle = vehicle;
+
+    public UserPayload( String info, User user) {
+        super(info);
+        this.user = user;
     }
-    public String getVehicleId() {
-        return vehicleId;
-    }
-    public void setVehicleId(String vehicleId) {
-        this.vehicleId = vehicleId;
-    }
-    public String getVehilceRegNum() {
-        return vehilceRegNum;
-    }
-    public void setVehilceRegNum(String vehilceRegNum) {
-        this.vehilceRegNum = vehilceRegNum;
-    }
+
+
 }

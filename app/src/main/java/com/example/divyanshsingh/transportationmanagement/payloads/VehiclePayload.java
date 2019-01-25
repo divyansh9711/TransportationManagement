@@ -20,7 +20,8 @@ public class VehiclePayload extends Payload {
         super();
     }
 
-    public VehiclePayload(String startLocation ,String endLocation , Timing timing){
+    public VehiclePayload(String startLocation ,String endLocation , Timing timing,int start , int limit){
+        super(start,limit);
         this.startLocation = startLocation;
         this.timing = timing;
         this.endLocation = endLocation;

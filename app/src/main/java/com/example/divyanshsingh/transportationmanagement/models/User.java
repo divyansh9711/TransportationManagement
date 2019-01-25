@@ -32,6 +32,7 @@ public class User extends Profile implements Parcelable {
     @Expose
     private Category userCategory;
 
+    public User(){}
 
     protected User(Parcel in) {
         super(in);
@@ -86,6 +87,11 @@ public class User extends Profile implements Parcelable {
     }
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+    public void setName(String fullName){
+        int index = fullName.indexOf(" ");
+        firstName = fullName.substring(0,index);
+        lastName = fullName.substring(index + 1,fullName.length()-1);
     }
     public String getUserName() {
         return userName;

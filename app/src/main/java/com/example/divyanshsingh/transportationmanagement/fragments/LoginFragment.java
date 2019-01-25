@@ -18,10 +18,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.divyanshsingh.transportationmanagement.API.APIError;
+import com.example.divyanshsingh.transportationmanagement.API.ResponseResolver;
+import com.example.divyanshsingh.transportationmanagement.API.RestClient;
 import com.example.divyanshsingh.transportationmanagement.R;
 import com.example.divyanshsingh.transportationmanagement.acitivity.AppController;
 import com.example.divyanshsingh.transportationmanagement.acitivity.DashboardActivity;
 import com.example.divyanshsingh.transportationmanagement.acitivity.SearchVehicleActivity;
+import com.example.divyanshsingh.transportationmanagement.acitivity.VehicleDetail;
+import com.example.divyanshsingh.transportationmanagement.models.Category;
+import com.example.divyanshsingh.transportationmanagement.models.User;
+import com.example.divyanshsingh.transportationmanagement.models.Vehicle;
+import com.example.divyanshsingh.transportationmanagement.payloads.RoutePayload;
+import com.example.divyanshsingh.transportationmanagement.payloads.UserPayload;
+import com.example.divyanshsingh.transportationmanagement.response.RouteResponse;
+import com.example.divyanshsingh.transportationmanagement.response.UserResponse;
 import com.example.divyanshsingh.transportationmanagement.utils.CommonProgressDialog;
 import com.example.divyanshsingh.transportationmanagement.utils.Constants;
 import com.example.divyanshsingh.transportationmanagement.utils.SingleButtonError;
@@ -167,7 +178,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 // Google Sign In was successful, authenticate with Firebase
-                progressDialog.dismiss();
+
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account);
 
@@ -200,11 +211,11 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            progressDialog.dismiss();
+
                             assert user != null;
-                            getUser(user);
+                            socialLogin(user);
                         } else {
-                            progressDialog.dismiss();
+
                             SingleButtonError.with(getActivity())
                                     .setMessage(Objects
                                             .requireNonNull(task.getException())
@@ -227,15 +238,14 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            progressDialog.dismiss();
+
                             if (user.isEmailVerified()) {
-                                getUser(user);
+                                socialLogin(user);
                             } else {
                                 SingleButtonError.with(getActivity()).setMessage("Please verify email").show();
                                 verify.setVisibility(View.VISIBLE);
                             }
                         } else {
-                            progressDialog.dismiss();
                             SingleButtonError.with(getActivity())
                                     .setMessage(Objects
                                             .requireNonNull(task.getException())
@@ -249,28 +259,17 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                 });
     }
 
-    private void getUser(FirebaseUser user) {
-        if (!user.isEmailVerified()) {
-            SingleButtonError.with(getActivity()).setMessage("Please verify email").show();
-            verify.setVisibility(View.VISIBLE);
-            verifyAccount();
-            return;
-        }
-        if(!user.getEmail().contains("@lnmiit.ac.in")){
-            revoke();
-            return;
-        }
+    private void getUser(User user) {
+
         progressDialog.dismiss();
         @SuppressLint("CommitPrefEdits") SharedPreferences.Editor editor = prefs.edit();
         editor.putString(Constants.isLoggedIn, "true");
-        editor.putString(Constants.loggedInUserId, user.getUid());
-        editor.putString(Constants.loggedInFirstName, user.getDisplayName());
-        editor.putString(Constants.loggedInEmail, user.getEmail());
-        try{
-            editor.putString(Constants.loggedInUserName,user.getDisplayName());
-        }catch (Exception ignored){}
+        editor.putString(Constants.loggedInUserId, user.getuId());
+        editor.putString(Constants.loggedInFirstName, user.getFirstName() + " "+ user .getLastName());
+        editor.putString(Constants.loggedInEmail, user.getUserEmail());
+
         //editor.putInt(Constants.loggedInUserType, user.getUserType());
-        editor.putString(Constants.loggedInUserMobile, user.getPhoneNumber());
+        editor.putString(Constants.loggedInUserMobile, user.getUserMobile());
         //editor.putInt(Constants.loggedInUserSex, user.getUserSex());
 
 
@@ -278,6 +277,59 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         Intent intent = new Intent(getActivity(), SearchVehicleActivity.class);
         startActivity(intent);
         Objects.requireNonNull(getActivity()).finish();
+    }
+
+
+    private void socialLogin(FirebaseUser firebaseUser){
+        if (!firebaseUser.isEmailVerified()) {
+            SingleButtonError.with(getActivity()).setMessage("Please verify email").show();
+            verify.setVisibility(View.VISIBLE);
+            verifyAccount();
+            return;
+        }
+        if(!firebaseUser.getEmail().contains("@lnmiit.ac.in")){
+            revoke();
+            return;
+        }
+        User user = validateAndGet(firebaseUser);
+        UserPayload payload = new UserPayload(firebaseUser.getUid(),user);
+        RestClient.getApiInterfaceInt(Objects.requireNonNull(getContext())).getUser(payload)
+                .enqueue(new ResponseResolver<UserResponse>(getActivity(), false, true) {
+                    @Override
+                    public void success(UserResponse userResponse) {
+                        getUser(userResponse.getUser());
+
+                    }
+
+                    @Override
+                    public void failure(APIError error) {
+
+                        progressDialog.dismiss();
+                    }
+                });
+    }
+
+    @SuppressLint("ShowToast")
+    private User validateAndGet(FirebaseUser firebaseUser) {
+        User user = new User();
+        Category category = new Category();
+        category.setCategoryId("9");
+        user.setUserCategory(category);
+        category.setCategoryId("-1");
+        user.setGender(category);
+        user.setUserMobile("N/A");
+
+        if(firebaseUser.getEmail() != null || firebaseUser.getDisplayName() != null){
+            user.setName(firebaseUser.getDisplayName());
+            user.setUserEmail(firebaseUser.getEmail());}
+        else{
+            Toast.makeText(getContext(),"An error has occured, Please try again",Toast.LENGTH_LONG);
+            return null;
+        }
+        if(firebaseUser.getPhoneNumber() != null) {
+            user.setUserMobile(firebaseUser.getPhoneNumber());
+        }
+        return user;
     }
 
     private void revoke() {

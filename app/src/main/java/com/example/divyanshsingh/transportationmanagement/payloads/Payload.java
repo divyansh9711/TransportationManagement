@@ -19,6 +19,14 @@ public class Payload {
         // TODO Auto-generated constructor stub
     }
 
+    public Payload(String info) {
+        this.info = info;
+    }
+    public Payload(int start , int limit) {
+        this.start = start;
+        this.limit = limit;
+    }
+
     public Payload(String aPIKey, String campusId, String searchKey, String sortBy, boolean sortOrder, int start,
                    int limit) {
         super();

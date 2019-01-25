@@ -19,6 +19,9 @@ public class Timing implements Parcelable {
     @SerializedName("endTime")
     @Expose
     private String endTime;
+    @SerializedName("weekDay")
+    @Expose
+    private String weekDay;
 
     public Timing () {}
 
@@ -27,11 +30,13 @@ public class Timing implements Parcelable {
         this.endTime = endTime;
     }
 
+
     protected Timing(Parcel in) {
         startDate = in.readString();
         endDate = in.readString();
         startTime = in.readString();
         endTime = in.readString();
+        weekDay = in.readString();
     }
 
     @Override
@@ -40,6 +45,7 @@ public class Timing implements Parcelable {
         dest.writeString(endDate);
         dest.writeString(startTime);
         dest.writeString(endTime);
+        dest.writeString(weekDay);
     }
 
     @Override
@@ -58,6 +64,14 @@ public class Timing implements Parcelable {
             return new Timing[size];
         }
     };
+
+    public String getWeekDay() {
+        return weekDay;
+    }
+
+    public void setWeekDay(String weekDay) {
+        this.weekDay = weekDay;
+    }
 
     public String getStartDate() {
         return startDate;

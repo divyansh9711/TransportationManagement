@@ -59,11 +59,11 @@ public class SearchVehicleActivity extends AppCompatActivity implements View.OnC
         timing = new Timing();
         timing.setStartTime(time);
         timing.setStartDate(date);
-        timing.setEndDate("0");
-        x = DateTimeUtils.getMinute(0);
+        timing.setWeekDay("1");
+        x = DateTimeUtils.getDay(0);
         y = DateTimeUtils.getYear(0);
-        if (DateTimeUtils.getWeekDay(y, x, day).equals("Sun")) {
-            timing.setEndDate("1");
+        if ( DateTimeUtils.getWeekDay(y, x, day).equals("Sun") || DateTimeUtils.getWeekDay(y, x, day).equals("Sat")) {
+            timing.setWeekDay("2");
         }
         timeTv.setOnClickListener(this);
         dateTv.setOnClickListener(this);
@@ -87,9 +87,9 @@ public class SearchVehicleActivity extends AppCompatActivity implements View.OnC
     }
 
     private void getVehicle() {
-        String startLocation = origin.getText().toString();
-        String endLocation = destination.getText().toString();
-        VehiclePayload vehiclePayload = new VehiclePayload(startLocation, endLocation, timing);
+        final String startLocation = origin.getText().toString();
+        final String endLocation = destination.getText().toString();
+        VehiclePayload vehiclePayload = new VehiclePayload(startLocation, endLocation, timing,0,10);
         RestClient.getApiInterfaceInt(SearchVehicleActivity.this).getVehicle(vehiclePayload)
                 .enqueue(new ResponseResolver<VehicleResponse>(SearchVehicleActivity.this, false, true) {
                     @Override
@@ -97,6 +97,9 @@ public class SearchVehicleActivity extends AppCompatActivity implements View.OnC
                         Intent intent = new Intent(SearchVehicleActivity.this, DashboardActivity.class);
 
                         intent.putExtra("VEHICLE_LIST", vehicleResponse.getVehicleList());
+                        intent.putExtra("START_LCT",startLocation);
+                        intent.putExtra("END_LCT",endLocation);
+                        intent.putExtra("TIMING",timing);
                         startActivity(intent);
                         progressDialog.dismiss();
                         finish();
@@ -153,9 +156,9 @@ public class SearchVehicleActivity extends AppCompatActivity implements View.OnC
                 if (dd < 10) {
                     d = "0" + String.valueOf(dd);
                 }
-                if (DateTimeUtils.getWeekDay(yy, mm, dd).equals("Sun")) {
+                if (DateTimeUtils.getWeekDay(yy, mm, dd).equals("Sun") || DateTimeUtils.getWeekDay(y, x, day).equals("Sat")) {
 
-                    timing.setEndDate("1");
+                    timing.setWeekDay("2");
                 }
                 view.setText(DateTimeUtils.getWeekDay(yy, mm, dd) + ", " + d + "/" + m);
                 date = d + m + String.valueOf(yy);

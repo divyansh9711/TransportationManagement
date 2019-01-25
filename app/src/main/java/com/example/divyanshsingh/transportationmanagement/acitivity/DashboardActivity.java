@@ -171,7 +171,7 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
     }
     private void getAllBuses(){
         progressDialog.show();
-        VehiclePayload vehiclePayload = new VehiclePayload("","",new Timing());
+        VehiclePayload vehiclePayload = new VehiclePayload("","",new Timing(),0,8);
         RestClient.getApiInterfaceInt(DashboardActivity.this).getVehicle(vehiclePayload)
                 .enqueue(new ResponseResolver<VehicleResponse>(DashboardActivity.this, false, true) {
                     @Override

@@ -34,6 +34,10 @@ public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.VehicleA
         vehicleList.addAll(list);
         notifyDataSetChanged();
     }
+    public void addData(List<Vehicle> list){
+        vehicleList.addAll(list);
+        notifyDataSetChanged();
+    }
 
     @NonNull
     @Override
@@ -55,7 +59,7 @@ public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.VehicleA
             }
             if (item.getEndLocation() != null) {
                 vehicleAdapterViewHolder.destination.setText(item.getEndLocation().getTitle());
-            }if(item.getTiming().getEndDate().equals("0")){
+            }if(item.getTiming().getWeekDay() != null && item.getTiming().getWeekDay().equals("1")){
                 vehicleAdapterViewHolder.day.setText("Week Day");
             }else{
                 vehicleAdapterViewHolder.day.setText("Holiday");

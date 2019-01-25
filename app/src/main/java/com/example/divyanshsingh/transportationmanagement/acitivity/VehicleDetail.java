@@ -183,7 +183,11 @@ public class VehicleDetail extends FragmentActivity implements GoogleMap.OnMyLoc
         List<Route> subRoutes = vehicle.getSub();
         if (subRoutes != null) {
             for (Route route : subRoutes) {
-                markers.add(route.getEndLocation());
+                if(route.getEndLocation().getTitle().toLowerCase().equals("lnmiit"))
+                markers.add(route.getStartLocation());
+                else{
+                    markers.add(route.getEndLocation());
+                }
             }
         }
         markers.add(vehicle.getEndLocation());

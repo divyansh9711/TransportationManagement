@@ -17,8 +17,13 @@ public class Category implements Parcelable{
     @Expose
     private String categoryTitle;
 
+    public Category(){}
 
-    protected Category(Parcel in) {
+    public Category(String categoryId){
+        this.categoryId = categoryId;
+    }
+
+    public Category(Parcel in) {
         categoryId = in.readString();
         categoryInfo = in.readString();
         categoryTitle = in.readString();
